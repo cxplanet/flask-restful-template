@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  web:
+    build: ./services/rest-api
+    command: python manage.py run -h 0.0.0.0
+    volumes:
+      - ./services/rest-api/:/usr/src/app/
+    ports:
+      - 5000:5000
+    env_file:
+      - ./.env.dev
+
+  postgres:
+    image: postgres:12-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=restapi
+      - POSTGRES_PASSWORD=restapi
+      - POSTGRES_DB=restapi_dev
+
+volumes:
+  postgres_data:
